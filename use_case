@@ -1,0 +1,40 @@
+import subprocess
+ 
+ 
+# Function to run Linux commands
+def run(cmd):
+    return subprocess.getoutput(cmd)
+ 
+ 
+# Open report file
+file = open("health_report.txt", "w")
+ 
+# Write title
+file.write("SERVER HEALTH REPORT\n")
+file.write("--------------------\n\n")
+ 
+# 1. Disk Usage
+file.write("1. Disk Usage:\n")
+file.write(run("df -h"))
+file.write("\n\n")
+ 
+# 2. Running Processes
+file.write("2. Top Processes:\n")
+file.write(run("ps -eo pid,comm,%cpu,%mem --sort=-%cpu | head -6"))
+file.write("\n\n")
+ 
+# 3. Users
+file.write("3. System Users:\n")
+file.write(run("cut -d: -f1 /etc/passwd"))
+file.write("\n\n")
+ 
+# 4. Firewall
+file.write("4. Firewall Status:\n")
+file.write(run("ufw status"))
+file.write("\n\n")
+ 
+# Close file
+file.close()
+ 
+print("Health check completed. Report saved.")
+ 
